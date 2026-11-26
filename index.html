@@ -152,6 +152,30 @@
   .s-btn:hover { background: rgba(255, 255, 255, .16); }
   .s-btn.active { background: var(--blue); border-color: var(--blue); box-shadow: 0 0 18px rgba(37, 99, 235, .55); }
 
+  .stream-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding: 14px 20px;
+    border-radius: 16px;
+    font-size: .92rem;
+  }
+  .stream-fallback span { opacity: .8; }
+  .stream-fallback a {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: var(--green);
+    color: #06210f;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .stream-fallback a:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(34, 197, 94, .45); }
+
   .stream-frame {
     position: relative;
     border-radius: 16px;
@@ -384,10 +408,16 @@
     <div class="stream-frame">
       <!-- ⚠️ ЗАМЕНИТЕ три ссылки в массиве streamUrls внизу в script на ссылки встраивания из МТС Линк -->
       <iframe id="streamFrame"
-              src="https://my.mts-link.ru/j/exportcenter/29016876659"
+              src="https://mts-link.webinar.ru/ССЫЛКА_ГЛАВНАЯ_СЦЕНА"
               allow="autoplay; fullscreen; picture-in-picture; microphone; camera"
               allowfullscreen
               title="Трансляция конференции"></iframe>
+    </div>
+
+    <!-- Резервный выход: открыть эфир напрямую, если iframe не работает -->
+    <div class="glass stream-fallback">
+      <span>Трансляция не запускается? Возможно, вы открыли сайт из приложения — встроенные браузеры могут блокировать эфир.</span>
+      <a id="streamDirectLink" href="https://mts-link.webinar.ru/ССЫЛКА_ГЛАВНАЯ_СЦЕНА" target="_blank" rel="noopener">Открыть эфир в новой вкладке ↗</a>
     </div>
   </div>
 </section>
@@ -623,6 +653,12 @@
            продублирована фильтрами ниже.</p>
       </details>
       <details class="glass">
+        <summary>Я открыл сайт из приложения (Telegram, ВК) и эфир не запускается</summary>
+        <p>Встроенные браузеры приложений блокируют работу трансляций в iframe. Нажмите «Открыть эфир в новой вкладке»
+           под окном трансляции — или в меню приложения выберите «Открыть в браузере» (Chrome / Safari).
+           Также на iPhone в настройках Safari может быть включена блокировка межсайтового отслеживания — временно отключите её.</p>
+      </details>
+      <details class="glass">
         <summary>Будет ли запись?</summary>
         <p>Да, записи всех трёх сцен будут доступны участникам после конференции. Ссылку пришлём на почту.</p>
       </details>
@@ -675,13 +711,14 @@
   /* ==== 2. Переключение эфиров ==== */
   // ⚠️ ЗАМЕНИТЕ ссылки на реальные URL встраивания из личного кабинета МТС Линк
   const streamUrls = {
-    main:     "https://my.mts-link.ru/j/exportcenter/29016876659",
+    main:     "https://mts-link.webinar.ru/ССЫЛКА_ГЛАВНАЯ_СЦЕНА",
     workshop: "https://mts-link.webinar.ru/ССЫЛКА_МАСТЕРСКАЯ",
     hood:     "https://mts-link.webinar.ru/ССЫЛКА_ПОД_КАПОТОМ"
   };
 
   function setStream(key, btn) {
     document.getElementById("streamFrame").src = streamUrls[key];
+    document.getElementById("streamDirectLink").href = streamUrls[key];
     document.querySelectorAll(".s-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
   }
