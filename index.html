@@ -181,9 +181,11 @@
     border-radius: 16px;
     overflow: hidden;
     aspect-ratio: 16 / 9;
+    min-height: 480px;   /* рекомендация МТС Линк — не менее 700px на широком экране */
     background: #000;
     border: 1px solid var(--glass-border);
   }
+  @media (min-width: 1100px) { .stream-frame { min-height: 700px; } }
   .stream-frame iframe {
     position: absolute;
     inset: 0;
@@ -409,7 +411,9 @@
       <!-- ⚠️ ЗАМЕНИТЕ три ссылки в массиве streamUrls внизу в script на ссылки встраивания из МТС Линк -->
       <iframe id="streamFrame"
               src="https://my.mts-link.ru/j/exportcenter/29016876659"
-              allow="autoplay; fullscreen; picture-in-picture; microphone; camera"
+              width="100%"
+              allow="camera; microphone; fullscreen; autoplay; picture-in-picture; display-capture"
+              sandbox="allow-same-origin allow-downloads allow-scripts allow-popups allow-forms"
               allowfullscreen
               title="Трансляция конференции"></iframe>
     </div>
@@ -709,11 +713,13 @@
   setInterval(tick, 1000);
 
   /* ==== 2. Переключение эфиров ==== */
-  // ⚠️ ЗАМЕНИТЕ ссылки на реальные URL встраивания из личного кабинета МТС Линк
+  // ⚠️ ВСТАВЬТЕ сюда обычные веб-ссылки на мероприятия (из кабинета: «Пригласить участников» →
+  // скопировать ссылку на мероприятие, формат https://my.mts-link.ru/...).
+  // НЕ используйте ссылки вида mts-link.webinar.ru — они ведут в приложение, а не во фрейм.
   const streamUrls = {
     main:     "https://my.mts-link.ru/j/exportcenter/29016876659",
-    workshop: "https://mts-link.webinar.ru/ССЫЛКА_МАСТЕРСКАЯ",
-    hood:     "https://mts-link.webinar.ru/ССЫЛКА_ПОД_КАПОТОМ"
+    workshop: "https://my.mts-link.ru/ССЫЛКА_МАСТЕРСКАЯ",
+    hood:     "https://my.mts-link.ru/ССЫЛКА_ПОД_КАПОТОМ"
   };
 
   function setStream(key, btn) {
